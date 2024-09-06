@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { socket } from '../socket';
 
+type msg = {
+  message: string 
+  room: string
+}
+
 export function MyForm() {
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +14,12 @@ export function MyForm() {
     event.preventDefault();
     setIsLoading(true);
 
-    socket.timeout(5000).emit('create-something', value, () => {
+    const message: msg = {
+      message: value,
+      room: 'default'
+    }
+
+    socket.timeout(5000).emit('create-something', message, () => {
       setIsLoading(false);
     });
   }
